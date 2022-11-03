@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+<div>
+  {{ macros.m_button_group([['globalSettingSaveBtn', '설정 저장']])}}
+  {{ macros.m_row_start('5') }}
+  {{ macros.m_row_end() }}
+  <nav>  
+    {{ macros.m_tab_head_start() }}
+      {{ macros.m_tab_head('normal', '일반', true) }}
+      {{ macros.m_tab_head('test', '테스트', false) }}
+    {{ macros.m_tab_head_end() }}
+  </nav>  
+  <form id='setting' name='setting'>  
+  <div class="tab-content" id="nav-tabContent">
+    {{ macros.m_tab_content_start('normal', true) }}
+      {{ macros.setting_checkbox('base_use_rclone_conf', 'rclone.conf 사용여부', value=arg['base_use_rclone_conf'], desc='On: rclone.conf에 등록된 remote정보를 GDrive API 인증에 사용합니다') }}
+      {{ macros.setting_input_text_and_buttons('base_rclone_conf_path', 'rclone.conf 경로', [['select_btn', '파일 선택'], ['load_btn','로드']], value=arg['base_rclone_conf_path'], desc=['경로 변경시 설정 저장 후 부터 적용']) }}
+    {{ macros.m_tab_content_end() }}   
+    {{ macros.m_tab_content_start('test', false) }}
+	  {{ macros.setting_select_and_buttons('remotes', '리모트선택', [], [['auth_test_btn','인증테스트']], col='5', value='', desc='리모트 선택') }}
+      <!--<select id='remotes' name='remotes' class='form-control form-control-sm'>
+	    <option value="remote">리모트명</option>
+	  </select> -->
+    {{ macros.m_tab_content_end() }}   
+   
+  </div><!--tab-content-->
+  </form>
+</div> <!--전체-->
+
+<script type="text/javascript">
+//var form_setting = null;
+var str_remotes = "{{arg['remote_names']}}"
+var remote_names = str_remotes.split('|');
+
+$(document).ready(function(){
+  //form_setting = get_formdata('#setting');
+  set_remotes_options();
+});
+
+function set_remotes_options() {
+  for (i = 0; i < remote_names.length; i++) {
+    setting.remotes.options[i] = new Option(remote_names[i]);
+  }
+}
+
+$("body").on('click', '#select_btn', function(e){ 
+  e.preventDefault();
+  globalSelectLocalFile("업로드 파일 선택", $('#base_rclone_conf_path').val(), function(ret) {
+    $('#base_rclone_conf_path').val(ret);
+  });
+});
+
+$("body").on('click', '#load_btn', function(e){ 
+  e.preventDefault();
+  conf_path = document.getElementById("base_rclone_conf_path").value;
+  globalSendCommand('load_conf', conf_path, null, null, function(ret) {
+    console.log(ret);
+  });
+});
+
+$("body").on('click', '#auth_test_btn', function(e){ 
+  e.preventDefault();
+  remote_name = document.getElementById("remotes").value;
+  globalSendCommand('auth_test', remote_name, null, null, function(ret) {
+    console.log(ret);
+  });
+});
+
+</script>    
+{% endblock %}
+

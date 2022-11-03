@@ -1,0 +1,7 @@
+title: "Gdrive 라이브러리 for FlaskFarm"
+version: "1.0.0"
+package_name: "libgdrive"
+developer: "orial"
+description: "구글드라이브 API 라이브러리"
+home: "https://github.com/byorial/libgdrive"
+more: "https://github.com/byorial/libgdrive/blob/main/README.md"
