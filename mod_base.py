@@ -62,7 +62,7 @@ class ModuleBase(PluginModuleBase):
         if not path: path = P.ModelSetting.get(f'{name}_rclone_conf_path')
         command = ['rclone', '--config', path, 'config', 'dump']
         ret = SupportSubprocess.execute_command_return(command, format='json')
-        P.logger.info(f'ret: {ret}')
+        #P.logger.info(f'ret: {ret}')
         for k, v in ret['log'].items():
             if 'token' in v: v['token'] = json.loads(v['token'])
         #self.remotes = ret['log']
@@ -72,6 +72,6 @@ class ModuleBase(PluginModuleBase):
         if not self.remotes: remotes = self.get_remotes(path)
         else: remotes = self.remotes
         remote_names = list(x for x in remotes.keys())
-        P.logger.error(f'remote_names={remote_names}')
+        #P.logger.error(f'remote_names={remote_names}')
         return remote_names
 
