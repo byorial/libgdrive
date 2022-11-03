@@ -1,5 +1,5 @@
 from .setup import *
-from .lib_gdrive import LibGdrive
+from .libgdrive import LibGdrive
 
 name = 'base'
 
