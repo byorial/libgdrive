@@ -187,24 +187,11 @@ class LibGdrive:
             return None
 
     @classmethod
-    def get_access_token_for_gds(cls, json_data, scopes, impersonate):
+    def get_credentials_from_sa_info(cls, sa_info, scopes, impersonate=None):
         try:
             creds = None
-            creds = ServiceAccountCredentials.from_json_keyfile_dict(json_data, scopes).create_delegated(impersonate)
-            if creds.access_token == '' or creds.access_token == None or creds.access_token_expired:
-                logger.info('try to access_token refresh')
-                creds.refresh(Http())
-            return creds.access_token
-        except Exception as e: 
-            logger.error('Exception:%s', e)
-            logger.error(traceback.format_exc())
-            return None
-
-    @classmethod
-    def get_credentials_for_gds(cls, sa_info, scopes, impersonate):
-        try:
-            creds = None
-            creds = ServiceAccountCredentials.from_json_keyfile_dict(sa_info, scopes).create_delegated(impersonate)
+            creds = ServiceAccountCredentials.from_json_keyfile_dict(sa_info, scopes)
+            if impersonate: creds = creds.create_delegated(impersonate)
             if creds.access_token == '' or creds.access_token == None or creds.access_token_expired:
                 logger.info('try to access_token refresh')
                 creds.refresh(Http())
@@ -215,10 +202,11 @@ class LibGdrive:
             return None
 
     @classmethod
-    def sa_get_token_for_gds(cls, sa_info, scopes, impersonate):
+    def get_access_token_from_sa_info(cls, sa_info, scopes, impersonate=None):
         try:
             creds = None
-            creds = ServiceAccountCredentials.from_json_keyfile_dict(sa_info, scopes).create_delegated(impersonate)
+            creds = ServiceAccountCredentials.from_json_keyfile_dict(sa_info, scopes)
+            if impersonate: creds = creds.create_delegated(impersonate)
             if creds.access_token == '' or creds.access_token == None or creds.access_token_expired:
                 logger.info('try to access_token refresh')
                 creds.refresh(Http())

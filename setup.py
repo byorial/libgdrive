@@ -13,6 +13,16 @@ setting = {
                 'name': '설정',
             },
             {
+                'uri': 'manual',
+                'name': '매뉴얼',
+                'list': [
+                    {
+                        'uri':'files/usage.md',
+                        'name':'사용법',
+                    }
+                ]
+            },
+            {
                 'uri': 'log',
                 'name': '로그',
             },
