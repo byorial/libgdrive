@@ -18,7 +18,10 @@ class ModuleBase(PluginModuleBase):
 
     def process_menu(self, page, req):
         arg = P.ModelSetting.to_dict()
-        arg['remote_names'] = '|'.join(self.remote_names) if self.remote_names else '|'.join(self.get_remote_names(P.ModelSetting.get(f'{name}_rclone_conf_path')))
+        try:
+            arg['remote_names'] = '|'.join(self.remote_names) if self.remote_names else '|'.join(self.get_remote_names(P.ModelSetting.get(f'{name}_rclone_conf_path')))
+        except:
+            pass
         try:
             return render_template(f'{__package__}_{name}.html', arg=arg)
         except Exception as e:
